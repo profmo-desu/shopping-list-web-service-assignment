@@ -73,7 +73,7 @@ def s3_get_multiple_objects(folder):
     if bucket is None:
         return {}
     s3_bucket = s3.Bucket(bucket)
-    if folder[-1] != '/':
+    if len(folder) > 0 and folder[-1] != '/':
         prefix = f'{folder}/'
     else:
         prefix = folder
@@ -83,7 +83,7 @@ def s3_get_multiple_objects(folder):
     for object_summary in s3_bucket.objects.filter(Prefix=prefix):
         key = object_summary.key
         object = s3.Object(bucket, key)
-        contents.append(object.get().read().decode('utf-8'))
+        contents.append(json.loads(object.get()['Body'].read().decode('utf-8')))
     return contents
 
 

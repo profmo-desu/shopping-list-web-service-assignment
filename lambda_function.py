@@ -32,7 +32,7 @@ def handle_get(event):
 
     # TODO: assign folder to the folder's name.  This could be constant or obtained from the query or path parameter.
     folder = None
-    #response_body = rest_interface.s3_get_multiple_objects(bucket_name, folder)
+    #response_body = rest_interface.s3_get_multiple_objects(folder)
     ##### END - Get the content of a multiple objects/files.
 
     return response_body
