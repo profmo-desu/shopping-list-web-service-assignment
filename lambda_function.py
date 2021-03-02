@@ -54,7 +54,7 @@ def handle_post(event):
 def lambda_handler(event, context):
     httpMethod = event["httpMethod"]
     if httpMethod == "POST":
-        return rest_interface.response(handle_post(event))
+        return rest_interface.response(handle_post(event), event=event)
     elif httpMethod == "GET":
-        return rest_interface.response(handle_get(event))
+        return rest_interface.response(handle_get(event), event=event)
     return rest_interface.response(dict(msg="Unsupported method", method=httpMethod), statusCode=405)
