@@ -47,7 +47,10 @@ def handle_post(event):
     # TODO: You may have to make some changes to the json_obj or create a new object to store in S3.
     transformed_body = body
 
-    rest_interface.s3_write_obj(key, transformed_body)
+    if rest_interface.s3_write_obj(key, transformed_body):
+        return dict(key=key,status="added")
+    else:
+        return dict(key=key, status="not added")
 
 
 

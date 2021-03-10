@@ -90,8 +90,8 @@ def s3_get_multiple_objects(folder):
 def s3_write_obj(key, json_obj):
     print("key=",key, json_obj)
     if bucket is None:
-        return
+        return False
     object = s3.Object(bucket, key)
     data = bytes(json.dumps(json_obj), "utf-8")
     object.put(Body=data, ContentType="application/json")
-    return
+    return Return
