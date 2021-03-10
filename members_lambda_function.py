@@ -21,11 +21,12 @@ def handle_get(event):
     response_body = {}
     ###### BEGIN - Get the content of a single object/file #####
     # TODO: provide code to create the correct key.
-    key = query_param_val
+    uuid = query_param_val
 
     # If the query parameter is present, then get a single member.
-    if key is not None:
+    if uuid is not None:
         # Get a single file
+        key = f"/members/{uuid}"
         response_body = rest_interface.s3_get_object(key)
         print("response_body = ", response_body)
 
@@ -45,14 +46,15 @@ def handle_post(event):
     import hashlib
     m = hashlib.md5()
     m.update(member_signup['email'].encode())
-    key = m.hexdigest()
+    uuid = m.hexdigest()
+    key = f"/members/{uuid}"
 
     # TODO: You may have to make some changes to the json_obj or create a new object to store in S3.
     member = dict(key=key, name=member_signup["name"], email=member_signup["email"])
 
     rest_interface.s3_write_obj(key, member)
 
-    return dict(uuid=key)
+    return dict(uuid=uuid)
 
 
 
