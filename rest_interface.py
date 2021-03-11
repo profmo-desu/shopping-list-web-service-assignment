@@ -27,7 +27,10 @@ def get_query_parm(event, query_parm_name):
     Get the value of the query parameter with the name stored in query_parm_name.
     """
     try:
-        return event['queryStringParameters'][query_parm_name]
+        params = event['queryStringParameters']
+        if params is not None:
+            return params[query_parm_name]
+        return None
     except KeyError:
         return None
 
@@ -90,8 +93,8 @@ def s3_get_multiple_objects(folder):
 def s3_write_obj(key, json_obj):
     print("key=",key, json_obj)
     if bucket is None:
-        return False
+        return
     object = s3.Object(bucket, key)
     data = bytes(json.dumps(json_obj), "utf-8")
     object.put(Body=data, ContentType="application/json")
-    return Return
+    return
