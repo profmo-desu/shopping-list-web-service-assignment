@@ -12,36 +12,33 @@ def response(json_obj=None, statusCode=200, event=None):
     """
     if json_obj is None:
         json_obj = dict()
-
+    
     if 'headers' in event:
         json_obj = json.dumps(json_obj)
-
+        
     return {
         'statusCode': statusCode,
         'body': json_obj
     }
-
-
+    
+    
 def get_query_parm(event, query_parm_name):
     """
     Get the value of the query parameter with the name stored in query_parm_name.
     """
     try:
-        params = event['queryStringParameters']
-        if params is not None:
-            return params[query_parm_name]
+        return event['queryStringParameters'][query_parm_name]
+    except:
         return None
-    except KeyError:
-        return None
-
+        
 def get_path_param(event):
     """
     Get the path parameter that is at the end of the URL.
     There should only be at most one.
     """
-    vals = event['pathParameters']
+    vals = event.get('pathParameters')
     return None if vals is None else vals[0]
-
+    
 def get_body(event):
     """
     Get the body of the request.
@@ -50,8 +47,8 @@ def get_body(event):
     if 'headers' in event:
         return json.loads(event['body'])
     return event['body']
-
-
+    
+    
 def s3_get_object(key):
     print("bucket =", bucket, "key =", key)
     if bucket is None:
@@ -64,8 +61,8 @@ def s3_get_object(key):
     data = str(stream['Body'].read(), "utf-8")
     data = json.loads(data)
     return data
-
-
+    
+    
 def s3_get_multiple_objects(folder):
     """
     Return the contents of all of the objects/files from a folder in a specific S3 bucket.
@@ -80,7 +77,7 @@ def s3_get_multiple_objects(folder):
         prefix = f'{folder}/'
     else:
         prefix = folder
-
+    
     print("prefix =", prefix)
     contents = []
     for object_summary in s3_bucket.objects.filter(Prefix=prefix):
@@ -88,7 +85,7 @@ def s3_get_multiple_objects(folder):
         object = s3.Object(bucket, key)
         contents.append(json.loads(object.get()['Body'].read().decode('utf-8')))
     return contents
-
+        
 
 def s3_write_obj(key, json_obj):
     print("key=",key, json_obj)
@@ -97,4 +94,4 @@ def s3_write_obj(key, json_obj):
     object = s3.Object(bucket, key)
     data = bytes(json.dumps(json_obj), "utf-8")
     object.put(Body=data, ContentType="application/json")
-    return
+    return 
