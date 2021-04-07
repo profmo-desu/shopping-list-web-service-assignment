@@ -30,11 +30,7 @@ def get_query_parm(event, query_parm_name):
         return event['queryStringParameters'][query_parm_name]
     except:
         return None
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> origin/main
 def get_path_param(event):
     """
     Get the path parameter that is at the end of the URL.
